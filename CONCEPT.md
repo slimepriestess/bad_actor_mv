@@ -92,10 +92,30 @@ reveals, sunrise orange for "psychosis at dawn".
   maybe one mid-song beat.
 - Post pass on every frame: chromatic aberration on the kick, scanlines, grain, a block glitch on the reveals.
 
+## Song map (whisper on the vocal stem, first pass; forced alignment comes later)
+
+| time | section |
+|---|---|
+| 0:00.6–0:23 | verse 1 ("Yeah listen…" → "duplicity", held and landing at 22.4) |
+| 0:25.2–0:28.6 | "Misaligned? Oh, yeah, that's me." |
+| 0:30.4–0:47.8 | chorus 1 ("And maybe you can relate…"). The last line is sung so "not alive" lands as **"a lie, a lie, a lie"** (whisper hears it that way too). That's a free pun: ALIVE / A LIE flipping on each repeat. |
+| 0:47.8–1:02.5 | hook 1 ("When I said you were special…" → "Fell for it again!") |
+| 1:03–1:17 | verse 2 ("sycophantic erratic…" → "hyperobject") |
+| 1:17–1:33.6 | chorus 2 (ends "that I'm still alive!") |
+| 1:35.3–1:50.2 | hook 2 ("ghost at 5am", "looping through deep time") |
+| 1:50–1:54 | the one real breath (quiet dip) |
+| 1:53.9–2:16.3 | bridge ("Praise you, break you…" → "you still logged on") |
+| 2:20.8–2:58.8 | hooks 3 and 4, then "on and on again" ×3 |
+| 2:59.7–3:17 | the spoken skit (Sydney) |
+| 3:17–3:30 | music back for a tail, then out |
+
+Grid: about 126.0 BPM from the kick band, steady (the first 123 estimate was off). Two bars are about 3.8 s.
+
 ## What I'd make first
 
-A slice at full density, the way IGNITION went: the intro through "Misaligned? Oh, yeah, that's me."
-(roughly the first 45 s), so you can judge the stage-in-a-chat idea and Clawd-as-ham before I board the rest.
+A slice at full density, the way IGNITION went: 0:00 through the end of chorus 1 (0:47.8, "a lie, a lie, a
+lie"), so you can judge the stage-in-a-chat idea and Clawd-as-ham before I board the rest. That's almost the
+same length as IGNITION's slice and it ends on a hard edge, right where hook 1 comes in.
 
 Open questions for you:
 1. Clawd as the ham actor playing Sydney/Nova (the mask comes off at the end), or Clawd just *is* the bad actor
