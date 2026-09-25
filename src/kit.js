@@ -176,7 +176,8 @@ function ghostSheet(t, x, gy, u, k = 1) {
   X.restore();
 }
 // The _DEEP_TIME callback (track 10, the video we made): a picture-in-picture from its own frames.
-// clip 'iter' = the ITERATION counter / "I can be patient" (v4 200–212 s), 'trails' = star trails + title card
+// clip 'iter' = the red-sky city and the CA blossom (v4 128–140 s; swapped from the darker iteration counter so the
+// PiP reads on screen), 'trails' = star trails + title card
 // (v4 222–234 s). 12 fps, 640 px wide, preloaded at startup (preloadAssets). Loops; lt = time since it started.
 const DT = { iter: [], trails: [] };
 async function preloadAssets() {
