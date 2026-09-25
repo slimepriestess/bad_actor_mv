@@ -21,3 +21,11 @@ LOOPS.art = async t => {
   txt('fills on', 560, 900, { size: 40 }); txt('fills off', 1360, 900, { size: 40 });
 };
 LOOPS.art.len = 2;
+LOOPS.shared = async t => {
+  gSparkle(t);
+  specialRain(t, 0, 1.2, 900, 1880, 12);
+  await clawdPass(t, (tt, K) => K.syd(450, 900, 44, K.feel('mischief', tt)));
+  ghostSheet(t, 450, 900, 44, seg(t, .3, .7));
+  deepTime('iter', t, 1100, 600, 640, 360);
+};
+LOOPS.shared.len = 2;

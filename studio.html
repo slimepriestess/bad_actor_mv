@@ -37,8 +37,17 @@
 <script src="src/timeline.js"></script>
 <!-- chapters -->
 <script src="src/lyrics.js"></script>
+<script src="src/onsets.js"></script>
 <script src="src/ch/c00_spike.js"></script>
 <script src="src/ch/c01_verse1.js"></script>
+<script src="src/ch/c02_chorus1.js"></script>
+<script src="src/ch/c03_hook1.js"></script>
+<script src="src/ch/c04_verse2.js"></script>
+<script src="src/ch/c05_chorus2.js"></script>
+<script src="src/ch/c06_hook2.js"></script>
+<script src="src/ch/c07_bridge.js"></script>
+<script src="src/ch/c08_finale.js"></script>
+<script src="src/ch/c09_skit.js"></script>
 <script>
 (async () => {
   const src = document.getElementById('src'), glc = document.getElementById('gl');
@@ -47,6 +56,7 @@
   await Promise.all(FONTS_ALL.map(f => document.fonts.load(`40px "${f}"`)));
   await document.fonts.ready;
   while (!window.kitReady) await new Promise(r => setTimeout(r, 20));
+  await preloadAssets();
   async function frame(t) {
     T = t; fxReset();
     X.setTransform(1, 0, 0, 1, 0, 0); X.globalAlpha = 1; X.globalCompositeOperation = 'source-over'; X.filter = 'none'; X.shadowBlur = 0; X.letterSpacing = '0px';

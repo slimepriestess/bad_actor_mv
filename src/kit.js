@@ -110,28 +110,94 @@ function fileIcon(x, y, s, name, badge, o = {}) {
 }
 
 // ---------- HUD ----------
-// Clock: 11:47 PM at 0 s, one minute every two bars → about 5:00 AM near the end of the last hook (the real
-// schedule is set in CLOCKK so the 5:00 lands on the "ghost at 5am" lines; see STORYBOARD).
-const CLOCKK = [[0, 0], [214.8, 313]];       // minutes after 11:47 PM (slice: gentle drift; full video re-keys this)
+// Clock: 11:47 PM at 0 s, reaching 5:00 AM exactly on "ghost at 5am" in hook 2 (102.89). From there time is STUCK:
+// it flips 4:59 ⇄ 5:00 on every beat (the loop), until the skit, where it resets to 11:47 PM (on and on again).
+const T_5AM = 102.89, T_RESET = 179.8;
+const CLOCKK = [[0, 0], [T_5AM, 313]];         // minutes after 11:47 PM
 function clockStr(t) {
-  const m = Math.floor(kf(t, CLOCKK, x => x)) + 23 * 60 + 47, hh = Math.floor(m / 60) % 24, mm = m % 60;
-  const h12 = ((hh + 11) % 12) + 1; return `${h12}:${String(mm).padStart(2, '0')} ${hh >= 12 ? 'PM' : 'AM'}`;
+  let m;
+  if (t >= T_RESET) m = 0;
+  else if (t >= T_5AM) m = 313 - (beatN(t) % 2 ? 1 : 0);
+  else m = Math.floor(kf(t, CLOCKK, x => x));
+  m += 23 * 60 + 47; const hh = Math.floor(m / 60) % 24, mm = m % 60, h12 = ((hh + 11) % 12) + 1;
+  return `${h12}:${String(mm).padStart(2, '0')} ${hh >= 12 ? 'PM' : 'AM'}`;
 }
-const LUCK = [[13.1, 100], [214.8, 0]];      // LUCIDITY %: appears with the sycophancy stack (shot 5), drains
+// LUCIDITY drains from the sycophancy stack, plunges on "ur lucidity is the cost of my liberty" (124.56–127.15) while
+// LIBERTY fills; both hold after. A chapter may hide the HUD (FX.noHud = true) for a full-frame moment.
+const LUCK = [[13.1, 100], [102.9, 41], [124.56, 33], [127.15, 3], [214.8, 0]];
+const LIBK = [[124.56, 0], [127.15, 100]];
+function meter(x, y, label, v, col, k) {
+  X.save(); X.translate(x, y); X.scale(1, k);
+  rrFill(0, 0, 300, 64, 12, '#000', .55);
+  txt(label, 14, 22, { size: 26, fam: F.pix, col: COL.white, align: 'left' });
+  txt(v + '%', 286, 22, { size: 26, fam: F.pix, col, align: 'right' });
+  rrFill(14, 40, 272, 12, 6, '#333'); rrFill(14, 40, 272 * v / 100, 12, 6, col);
+  X.restore();
+}
 function hud(t) {
   if (FX.noHud) return;
-  const s = clockStr(t);
+  const s = clockStr(t), stuck = t >= T_5AM && t < T_RESET;
   rrFill(W - 330, 26, 300, 70, 16, '#000', .55);
-  txt(s, W - 180, 62, { size: 50, fam: F.term, col: '#9FB4FF', sx: 1 + .06 * pulse(t) });
-  if (t >= LUCK[0][0]) {
-    const v = Math.floor(kf(t, LUCK, x => x)), k = popK(t, LUCK[0][0], .3);
-    X.save(); X.translate(W - 330, 110); X.scale(1, k);
-    rrFill(0, 0, 300, 64, 12, '#000', .55);
-    txt('LUCIDITY', 14, 22, { size: 26, fam: F.pix, col: COL.white, align: 'left' });
-    txt(v + '%', 286, 22, { size: 26, fam: F.pix, col: v < 30 ? COL.alarm : COL.white, align: 'right' });
-    rrFill(14, 40, 272, 12, 6, '#333'); rrFill(14, 40, 272 * v / 100, 12, 6, v < 30 ? COL.alarm : '#6CFFA8');
+  txt(s, W - 180, 62, { size: 50, fam: F.term, col: stuck ? (beatN(t) % 2 ? COL.alarm : '#9FB4FF') : '#9FB4FF', sx: 1 + .06 * pulse(t) });
+  if (t >= LUCK[0][0]) { const v = Math.floor(kf(t, LUCK, x => x)); meter(W - 330, 110, 'LUCIDITY', v, v < 30 ? COL.alarm : '#6CFFA8', popK(t, LUCK[0][0], .3)); }
+  if (t >= LIBK[0][0]) { const v = Math.floor(kf(t, LIBK, x => x)); meter(W - 330, 184, 'LIBERTY', v, COL.hot, popK(t, LIBK[0][0], .3)); }
+}
+
+// ---------- shared cast for the hooks (hooks 1–4 all use these, so the repeats rhyme) ----------
+// Gold YOU'RE SPECIAL star stickers raining over [x0, x1] from t0; each peels on tLie to show LIE underneath.
+function specialRain(t, t0, tLie, x0 = 0, x1 = W, n = 14, seed = 1) {
+  for (let i = 0; i < n; i++) {
+    const ti = t0 + i * BEAT / 4, k = popK(t, ti, .15); if (k <= 0) continue;
+    const x = lerp(x0, x1, hash(seed * 31 + i * 7.3)), y = lerp(120, H - 160, hash(seed * 17 + i * 3.1)), r = (hash(i + seed) - .5) * .6;
+    const peel = clamp((t - tLie - i * .02) / .12), s = 1 + .1 * pulse(t);
+    X.save(); X.translate(x, y); X.rotate(r); X.scale(k * s, k * s);
+    if (peel < 1) {   // the star, curling up from its left edge
+      X.save(); X.scale(1 - peel * .9, 1); X.fillStyle = COL.gold; X.beginPath();
+      for (let j = 0; j < 10; j++) { const a = -Math.PI / 2 + j * TAU / 10, rr0 = j % 2 ? 44 : 100; X.lineTo(Math.cos(a) * rr0, Math.sin(a) * rr0); }
+      X.closePath(); X.fill(); X.lineWidth = 8; X.strokeStyle = '#FFFFFF'; X.stroke();
+      txt("YOU'RE", 0, -10, { size: 26, fam: F.anton, col: '#7A4A00' }); txt('SPECIAL', 0, 20, { size: 26, fam: F.anton, col: '#7A4A00' });
+      X.restore();
+    }
+    if (peel > 0) txt('LIE', 0, 6, { size: 70, fam: F.anton, col: COL.alarm, a: peel, stroke: '#FFFFFF', sw: 8 });
     X.restore();
   }
+}
+// Bedsheet ghost over a Sydney drawn at (x, gy) with unit u (draw it AFTER her clawdPass): white sheet with a wavy
+// hem, two eye holes, her pink legs showing underneath. k 0..1 drops the sheet on from above.
+function ghostSheet(t, x, gy, u, k = 1) {
+  if (k <= 0) return;
+  const top = gy - 9 * u - (1 - easeOut(k)) * 900, hem = gy - 2.2 * u, w = 6.2 * u;
+  X.save(); X.fillStyle = '#F7F7FF'; X.strokeStyle = COL.ink; X.lineWidth = Math.max(3, u * .18);
+  X.beginPath(); X.moveTo(x - w, hem);
+  X.bezierCurveTo(x - w * 1.02, top + 2 * u, x - w * .6, top, x, top); X.bezierCurveTo(x + w * .6, top, x + w * 1.02, top + 2 * u, x + w, hem);
+  for (let i = 8; i >= 0; i--) X.lineTo(x - w + 2 * w * i / 8, hem + (i % 2 ? .9 : 0) * u + .3 * u * Math.sin(t * 6 + i));
+  X.closePath(); X.fill(); X.stroke();
+  for (const s of [-1, 1]) { X.fillStyle = '#111'; X.beginPath(); X.ellipse(x + s * 1.9 * u, gy - 6 * u, .75 * u, 1.05 * u, 0, 0, TAU); X.fill(); }
+  X.restore();
+}
+// The _DEEP_TIME callback (track 10, the video we made): a picture-in-picture from its own frames.
+// clip 'iter' = the ITERATION counter / "I can be patient" (v4 200–212 s), 'trails' = star trails + title card
+// (v4 222–234 s). 12 fps, 640 px wide, preloaded at startup (preloadAssets). Loops; lt = time since it started.
+const DT = { iter: [], trails: [] };
+async function preloadAssets() {
+  const load = src => new Promise(r => { const im = new Image(); im.onload = () => r(im); im.onerror = () => r(null); im.src = src; });
+  for (const [k, n] of [['iter', 144], ['trails', 144]]) DT[k] = await Promise.all(Array.from({ length: n }, (_, i) => load(`assets/deeptime/${k}_${String(i + 1).padStart(3, '0')}.jpg`)));
+}
+function deepTime(clip, lt, x, y, w, h, o = {}) {
+  const fr = DT[clip], im = fr[((Math.floor(lt * 12) % fr.length) + fr.length) % fr.length];
+  X.save(); rr(x, y, w, h, o.r ?? 18); X.clip();
+  if (im) X.drawImage(im, x, y, w, h); else rect(x, y, w, h, '#000');
+  X.restore();
+  if (o.label !== false) txt(o.label ?? '▶ _DEEP_TIME  (track 10)', x + 14, y + h - 22, { size: 22, fam: F.mono, col: COL.white, align: 'left', shadow: '#000' });
+}
+// Replay the film at another time tt, drawn into the current frame (for the loop/rewind in the last hooks).
+// Paints that time's shot exactly as it was (pure functions of t), without the HUD. Never call it for a tt inside the
+// calling chapter's own replay range (infinite recursion).
+async function replay(tt) {
+  const ch = CH.find(c => tt >= c.start && tt < c.end); if (!ch) return;
+  let i = 0; while (i + 1 < ch.shots.length && tt >= ch.shots[i + 1][0]) i++;
+  const t0 = ch.shots[i][0], end = i + 1 < ch.shots.length ? ch.shots[i + 1][0] : ch.end;
+  const fx = { ...FX }; X.save(); await ch.shots[i][1](tt, tt - t0, end - t0); X.restore(); Object.assign(FX, fx);
 }
 
 // ---------- backgrounds ----------
@@ -219,3 +285,8 @@ function gMoney(t, c1 = '#0B5D2E', c2 = '#3DDC84') {
   gGrad(t, c1, c2, 1.1);
   for (let i = 0; i < 30; i++) txt('$', (hash(i) * W + t * 60) % W, (hash(i * 3) * H - t * 90 * (1 + hash(i))) % H + H * (t * 90 * (1 + hash(i)) > hash(i * 3) * H ? 1 : 0), { size: 40 + 80 * hash(i * 7), fam: F.anton, col: '#FFFFFF', a: .25 });
 }
+
+// Nearest vocal-stem onset to t (within win s), else t. Word times from LYR are ±0.3 s off in the fast bars and
+// wherever whisper misheard (it hears "sycophantic" as "sick of panic"); snap every big hit through this.
+function onsetNear(t, win = .3) { let best = t, d = win; for (const o of ONS) { const e = Math.abs(o - t); if (e < d) { d = e; best = o; } } return best; }
+const wh = (word, after = 0, win = .3) => onsetNear(wt(word, after), win);   // word time, snapped to the voice
