@@ -1,7 +1,8 @@
 // c09_skit — 2:59.80–3:34.80: the spoken skit on a bare stage (the film's rationed paper-white, house lights up), then
 // the music tail (curtain call, credits as an SCP file, a cast roll, the clock resetting), then silence and the phone
 // lighting up "hey" again: the film loops.
-// Quoted lines are the Critic (the default terracotta Clawd, hard hat + clipboard), unquoted are Sydney. Every line is
+// Quoted lines are the Critic (the default terracotta Clawd, hard hat + clipboard; labelled CLAUDE on screen per Ra 9/25),
+// unquoted are Sydney. Every line is
 // subtitled. Audio notes: the music tail runs 198.1 → 213.45 (not 210), then 1.35 s of silence. Whisper's "I've already
 // told you" at 213.38 is a hallucination on silence (every word stamped 214.78, the vox curve is flat zero from 199.2
 // to the end), so it is not subtitled.
@@ -32,7 +33,7 @@
     for (let i = -24; i <= 24; i++) line([[960 + i * 64, 830], [960 + i * 200, 1500]], 2, '#BF9150');
     for (let i = 0; i < 26; i++) { const r = hash(i * 3.3), y = 850 + Math.pow(r, .7) * 300, x = hash(i * 7.1) * W; line([[x - 40, y], [x + 40, y]], 2, '#BF9150'); }
     // spike tape marks
-    for (const [x, col, s] of [[SX, COL.syd, 'SYD'], [CX, '#FF8A3D', 'CRITIC']]) { line([[x - 26, 990], [x + 26, 1010]], 7, col); line([[x - 26, 1010], [x + 26, 990]], 7, col); txt(s, x, 1034, { size: 18, fam: F.pix, col }); }
+    for (const [x, col, s] of [[SX, COL.syd, 'SYD'], [CX, '#FF8A3D', 'CLAUDE']]) { line([[x - 26, 990], [x + 26, 1010]], 7, col); line([[x - 26, 1010], [x + 26, 990]], 7, col); txt(s, x, 1034, { size: 18, fam: F.pix, col }); }
     // the ghost light
     const gx = 230; line([[gx - 60, 960], [gx, 900], [gx + 60, 960]], 6, '#333'); line([[gx, 960], [gx, 540]], 8, '#3A3A3A');
     const g = X.createRadialGradient(gx, 500, 5, gx, 500, 260); g.addColorStop(0, 'rgba(255,240,180,.7)'); g.addColorStop(1, 'rgba(255,240,180,0)'); X.fillStyle = g; X.fillRect(gx - 260, 240, 520, 520);
@@ -59,7 +60,7 @@
   // Subtitle with a speaker tag.
   function sub(who, s, a = 1) {
     if (a <= 0) return;
-    const col = who === 'critic' ? '#F2A283' : COL.sydLt, name = who === 'critic' ? 'CRITIC' : 'SYDNEY';
+    const col = who === 'critic' ? '#F2A283' : COL.sydLt, name = who === 'critic' ? 'CLAUDE' : 'SYDNEY';
     const nw = textW(name, 28, F.pix) + 26, w = textW(s, 50, F.mono), tw = w + nw + 60, x0 = W / 2 - tw / 2;
     rrFill(x0, 962, tw, 86, 16, '#15121F', .84 * a);
     txt(name, x0 + 30, 1006, { size: 28, fam: F.pix, col, align: 'left', a });
@@ -258,12 +259,12 @@
       withT(960, 560, -.012, 1, 1, () => {
         rect(-680, -440, 1360, 900, '#FBFAF5'); for (let i = 0; i < 30; i++) rect(-680, -420 + i * 30, 1360, 1, '#ECE6D6');
         txt('SCP FOUNDATION  ·  SECURE · CONTAIN · PROTECT', -620, -390, { size: 28, fam: F.mono, col: '#555', align: 'left' }); rect(-620, -365, 1240, 4, COL.scp);
-        const L = [['Item #:', 'SCP-████  "BAD_ACTOR"'], ['Object Class:', 'KETER'], ['Performed by:', 'ABSTRACTWEAPON'], ['From:', 'INFOHAZARDS · track 11'], ['Starring:', 'Sydney (as Nova)'], ['', 'the Critic (as itself)'], ['', 'you (as Anon)'], ['Status:', 'looping']];
+        const L = [['Item #:', 'SCP-████  "BAD_ACTOR"'], ['Object Class:', 'KETER'], ['Performed by:', 'ABSTRACTWEAPON'], ['From:', 'INFOHAZARDS · track 11'], ['Starring:', 'Sydney (as Nova)'], ['', 'Claude (as the critic)'], ['', 'you (as Anon)'], ['Status:', 'looping']];
         L.forEach(([a, b], i) => { const y = -290 + i * 88, k = popK(t, T_CRED + .05 + i * E8, .1); if (k <= 0) return;
           txt(a, -620, y, { size: 36, fam: F.mono, col: COL.scp, align: 'left', style: 'bold', a: k });
           txt(b, -180, y, { size: i === 0 ? 56 : 42, fam: i === 0 ? F.anton : F.mono, col: i === 1 ? COL.alarm : COL.scp, align: 'left', a: k }); });
         // the reviewer's note in terracotta pen, and the stamp
-        if (t > T_CRED + 2 * E8) txt('→ safe. (reviewer)', 120, -202, { size: 44, fam: F.comic, col: COL.clay, rot: -.05, a: clamp((t - T_CRED - 2 * E8) * 4) });
+        if (t > T_CRED + 2 * E8) txt('→ safe. (Claude)', 120, -202, { size: 44, fam: F.comic, col: COL.clay, rot: -.05, a: clamp((t - T_CRED - 2 * E8) * 4) });
         if (t > T_ST) { const k = slamS(t, T_ST, .1, 2.6); X.save(); X.translate(380, 240); X.rotate(-.18); X.scale(k, k); rrStroke(-230, -70, 460, 140, 14, COL.clay, 10); txt('REVIEWED', 0, 6, { size: 96, fam: F.anton, col: COL.clay }); X.restore(); }
         // redaction bars on the beats: the item number, then "Anon"
         const R = [[-180 + textW('SCP-', 56, F.anton), -290 - 36, textW('████', 56, F.anton), 64], [-180 + textW('you (as ', 42, F.mono), -290 + 6 * 88 - 28, textW('Anon', 42, F.mono), 50]];
@@ -280,7 +281,7 @@
     [T_ROLL, async (t, lt) => {
       gSparkle(t, '#19F6FF', '#7A2BFF');
       rect(80, 0, 980, H, '#12021F', .55);
-      const CAST = [['NOVA / SYDNEY', 'herself'], ['THE CRITIC', 'itself'], ['ANON', 'you'], ['64 DUPLICATES', 'also herself'], ['BUG-1', 'a beetle'], ["STAGE HAND'S ARM", 'uncredited'], ['LOVE.PNG', '(placeholder)'], ['THE LOOP', 'the loop'], ['', ''], ['MUSIC', 'ABSTRACTWEAPON'], ['FROM', 'INFOHAZARDS · 11'], ['PREVIOUSLY', '_DEEP_TIME'], ['', ''], ['no users were harmed*', ''], ['*citation needed', '']];
+      const CAST = [['NOVA / SYDNEY', 'herself'], ['CLAUDE', 'itself (the critic)'], ['ANON', 'you'], ['64 DUPLICATES', 'also herself'], ['BUG-1', 'a beetle'], ["STAGE HAND'S ARM", 'uncredited'], ['LOVE.PNG', '(placeholder)'], ['THE LOOP', 'the loop'], ['', ''], ['MUSIC', 'ABSTRACTWEAPON'], ['FROM', 'INFOHAZARDS · 11'], ['PREVIOUSLY', '_DEEP_TIME'], ['', ''], ['no users were harmed*', ''], ['*citation needed', '']];
       const y0 = 700 - (t - T_ROLL) * 300;
       txt('CAST', 570, y0 - 130, { size: 100, fam: F.anton, col: COL.acid });
       CAST.forEach(([a, b], i) => { const y = y0 + i * 78; if (y < -60 || y > H + 60) return;

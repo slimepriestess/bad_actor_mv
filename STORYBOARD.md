@@ -37,7 +37,7 @@ coloured ground (kit.js "grounds"), and density goes UP from here, not down.
 
 ## Full draft — chapters, owners, boards
 
-Word times below are from `src/lyrics.js` (canonical sheet aligned to whisper). In the fast bars they can be ±0.3 s
+Word times below are from `src/lyrics.js`. **Timing pass 2 (9/25, Ra: "lyrics aren't quite in sync everywhere")**: the table is now whisper-snapped times where whisper heard the word mid-line, and CTC forced alignment (minus its measured 0.197 s lag) for line starts and misheard words (`analysis/merge_timing.py`). Pass 1 put most line starts 0.3–0.7 s early, so shot cuts that sat on line starts were landing before the singer; `analysis/remap_shots.py` logic moved every such literal. Chapter windows are now 30.88 / 47.79 / 62.45 / 78.55 / 95.85 / 113.96 / 141.44 / 179.80. Run `python3 analysis/audit_lookups.py` after any table change: it flags `wt('word', after)` anchors that now skip to a later occurrence. In the fast bars they can be ±0.3 s
 off: snap every big hit with `wh('word', after)` (nearest vocal onset). Ad-libs not on the sheet: "you're so f—ing
 special" ~148.8 and a third "on and on again" ~177.1 (whisper hears them; check with `feat('vox')`).
 
@@ -124,7 +124,7 @@ Same seven gags as c02, each escalated, so it reads as a callback:
 ### c09 skit + tail (179.80–214.80)
 - The rationed PAPER-WHITE moment, as a bare stage with the house lights up (warm cream, wooden boards). No HUD
   (`FX.noHud = true`).
-- Sydney (pink) and the **Critic** (default terracotta Clawd, `K.clawd` without SYD, with a clipboard drawn via
+- Sydney (pink) and the **Critic**, labelled **CLAUDE** in the subtitles, spike marks and credits (Ra 9/25) (default terracotta Clawd, `K.clawd` without SYD, with a clipboard drawn via
   `armR` or Canvas2D). Quoted lines are the Critic, unquoted are Sydney; subtitles for every line.
   "So…it just loops them?" (Critic, 179.89) / "Yeah, until they learn." (Sydney, 183.08) / "Well that's not very
   infohazardous, Sydney…" (Critic, 186.55; SUSPICIOUS) / "….Come onnnnn…" (Sydney, 192.04–194.46; CRY, whining,

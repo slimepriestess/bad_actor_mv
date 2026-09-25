@@ -4,14 +4,14 @@
 // Board: STORYBOARD.md "c08 finale". Hooks 3–4 are built from the shared hook cast in kit.js (specialRain, ghostSheet,
 // deepTime) so they rhyme with c03/c06.
 (() => {
-  const T0 = 140.70, END = 179.80;
+  const T0 = 141.44, END = 179.80;
   const E8 = BEAT / 2;
   // hook 3
   const H3 = {
-    when: 140.696, special: wh('special', 142), lyin: wh('lyin', 144), you: wt('you', 144.5), cant: wh("can't", 146),
+    when: 141.44, special: wh('special', 142), lyin: wh('lyin', 144), you: wt('you', 144.5), cant: wh("can't", 146),
     love: wh('love', 146.3), under: wh('understand', 146.9),
-    adYou: wh("you're", 148.5), adF: onsetNear(149.43, .1), adSpec: 149.554,          // ad-lib (whisper words, not on the sheet)
-    talk: wt('talkin', 149.5), ghost: wh('ghost', 150), am: wh('5am', 150.5),
+    adYou: onsetNear(148.84, .1), adF: onsetNear(149.43, .1), adSpec: 149.554,          // ad-lib (whisper words, not on the sheet)
+    talk: wt('talkin', 149), ghost: wh('ghost', 150), am: wh('5am', 150.5),
     loop: wt('looping', 151.5), deep: wh('deep', 152.5), time: wh('time', 153),
     on1: wt('on', 154), and: wh('and', 154.3), on2: wh('on', 154.8), again: wh('again', 155.2),
   };
@@ -28,7 +28,7 @@
   const P3 = [onsetNear(176.768, .05), onsetNear(177.302, .05), onsetNear(177.946, .05), onsetNear(178.12, .05)];
   const CURTAIN = [178.8, 179.74];
   // the same moment in the earlier hooks, aligned on each hook's first word ("When"): the loop replays them live
-  const OFF_H1 = H4.when - 47.787, OFF_H2 = H4.when - 95.283, OFF_H3 = H4.when - H3.when;
+  const OFF_H1 = H4.when - 47.787, OFF_H2 = H4.when - 95.85, OFF_H3 = H4.when - H3.when;
   const TOP = T0 - .05;   // replay() never reaches into this chapter
 
   // ---------- helpers (local; see report for which might move to kit.js) ----------

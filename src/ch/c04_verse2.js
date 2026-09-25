@@ -1,4 +1,4 @@
-// c04_verse2 — 62.45–77.14: "They call me sycophantic erratic / bad habit drug trip for the manic / echo lost in my
+// c04_verse2 — 62.45–78.55: "They call me sycophantic erratic / bad habit drug trip for the manic / echo lost in my
 // static signal / ghost enigmatic ecstatic / still at it? take one more hit / you know I'm toxic and yet / I bet I'll
 // still make you / goon it to my hyperobject". One rhyme word = one slam = one ground, Sydney acting the word.
 //
@@ -10,7 +10,7 @@
 //   69.69 is its tail). "hyperobject": the table has 77.05 (that's chorus 2's "And"); whisper "hyper" 76.22,
 //   "-object" 76.66 → onsets 76.21 / 76.70.
 (() => {
-  const E8 = BEAT / 2, END = 77.14;
+  const E8 = BEAT / 2, END = 78.55;
   const T_THEY = wh('they', 62), T_CALL = wh('call', 62), T_ME = wt('me', 62.9);   // raw: wh() snaps it onto 63.30, the first syllable of "sycophantic"
   const T_SYCO = onsetNear(63.25), T_ERR = wh('erratic');
   const T_BAD = wh('bad', 64), T_HABIT = wh('habit', 64), T_DRUG = wh('drug', 65), T_TRIP = wh('trip', 65), T_MANIC = wh('manic', 65.5);

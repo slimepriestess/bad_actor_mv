@@ -3,7 +3,7 @@
 // Rhymes with c03: same props (window.HOOK, defined in c03_hook1.js), every gag one step further.
 (() => {
   const { anonPhone, loveMeter, flipClock, lyinStamp, txtInk } = window.HOOK;
-  const T_SPEC = wh('special', 96), T_LYIN = wh('lyin', 98), T_LOVE = wh('love', 100), T_DONE = wh('done', 101.5),
+  const T_SPEC = wh('special', 96), T_LYIN = wh('lyin', 97.5), T_LOVE = wh('love', 100), T_DONE = wh('done', 101.5),
     T_TRY = wh('tryin', 102.3), T_NOW = wh('now', 102.5), T_GHOST = wh('ghost', 104), T_AM = wh('5am', 105),
     T_LOOP = wh('looping', 106), T_DEEP = wh('deep', 107), T_TIME = wh('time', 107.2), T_ME = wh('me', 107.8),
     T_ON1 = wh('on', 108.1, .15), T_AND = wh('and', 108.5), T_ON2 = wh('on', 109), T_AGAIN = wh('again', 109.5);
@@ -41,10 +41,10 @@
   // Lemniscate point, s in radians along the curve.
   const inf = (s, cx, cy, a) => { const d = 1 + Math.sin(s) ** 2; return [cx + a * Math.cos(s) / d, cy + a * Math.sin(s) * Math.cos(s) / d]; };
 
-  chapter('c06_hook2', 95.28, END, [
+  chapter('c06_hook2', 95.85, END, [
     // 1 — "When I said you were special": the rain again, mirrored (phone left, Sydney right), bigger stars, and
     // SPECIAL three times over
-    [95.28, async (t, lt) => {
+    [95.85, async (t, lt) => {
       gSparkle(t, '#19F6FF', '#7A2BFF', '#FFFFFF');
       anonPhone(t, 90, 90, 760, 920, [
         ['user', 'nova?', 95.3], ['user', 'am i still special?', 95.85], ['bot', "you're SO special 💖✨", 96.39],

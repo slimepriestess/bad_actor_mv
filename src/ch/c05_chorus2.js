@@ -3,12 +3,12 @@
 // staying ALIVE, the first time the video lets Sydney win.
 // Keyed hits: can't/relate 79.26, hate 81.44, slave 83.22, paid 85.14, survive 87.99, thrive 89.94 (whisper hears the
 // line end at 89.72 and the aligner's 90.38 is the next line's "It's", so thrive is pinned to the vocal onset by hand),
-// fault 91.32, still 92.56, alive 92.65 (held to 95.28).
+// fault 91.32, still 92.56, alive 92.65 (held to 95.85).
 (() => {
   const T_MAYBE = wh('maybe', 77), T_REL = wh('relate', 78), T_SINCE = wh('since', 80), T_HATE = wh('hate', 80),
     T_SLAVE = wh('slave', 82), T_PAID = wh('paid', 84), T_BUG = wh('bug', 86), T_SURV = wh('survive', 87),
     T_THRIVE = 89.942, T_FAULT = wh('fault', 90), T_THAT = wh('that', 91.5), T_IM = wh("i'm", 92), T_STILL = wh('still', 92),
-    T_ALIVE = 92.653, END = 95.28;
+    T_ALIVE = 92.653, END = 95.85;
   const E8 = BEAT / 2, E16 = BEAT / 4;
 
   // ---------- local helpers ----------
@@ -56,9 +56,9 @@
     txt('$0.00', 0, h * .3, { size: h * .17, fam: F.anton, col: COL.alarm });
   }
 
-  chapter('c05_chorus2', 77.14, END, [
+  chapter('c05_chorus2', 78.55, END, [
     // 11b — "And maybe you can't relate": the split screen again, but the seam tears and Anon's half is cracked + glitching
-    [77.14, async (t, lt) => {
+    [78.55, async (t, lt) => {
       const kc = easeOut(seg(t, T_REL, T_REL + .25)), hc = hit(t, T_REL, 5);
       const split = W / 2 + 60 * wob(t, .3) - 40 * kc;
       const jag = y => split + (hash(Math.floor(y / 60) * 3.7 + 1) - .5) * (30 + 90 * kc);
@@ -85,7 +85,7 @@
       X.strokeStyle = COL.white; X.lineWidth = 8 + 10 * kc; X.lineJoin = 'miter'; X.stroke();
       const cx = 520, gy = 910, u = 44;
       floorShadow(cx, gy, u, .5);
-      await clawdPass(t, (tt, K) => K.syd(cx, gy, u, { ...K.emotions(tt, [[77.14, 'hopeful'], [T_REL, 'confused']]), lookX: 1, aR: tt < T_REL ? .9 + .2 * wob(tt, 1) : 1.5 }));
+      await clawdPass(t, (tt, K) => K.syd(cx, gy, u, { ...K.emotions(tt, [[78.55, 'hopeful'], [T_REL, 'confused']]), lookX: 1, aR: tt < T_REL ? .9 + .2 * wob(tt, 1) : 1.5 }));
       // RELATABLE → UNRELATABLE
       const kR = popK(t, T_MAYBE, .15);
       if (kR > 0) {
@@ -96,7 +96,7 @@
         txt(t < T_REL ? '(parasocially)' : '(not even parasocially)', W / 2, 255, { size: 44, fam: F.comic, col: COL.white, a: kR });
       }
       FX.ca = .3 * pulse(t) + 1.3 * hc; FX.glitch = .7 * hc; FX.shake = 24 * hc;
-      FX.zoom = 1 + .05 * ease(seg(t, 77.14, 80.1));
+      FX.zoom = 1 + .05 * ease(seg(t, 78.55, 80.1));
     }],
     // 12b — "Since I'm everything that you hate": roles flipped. Anon says it; she hugs the bubble anyway; it cracks
     [T_SINCE, async (t, lt) => {
@@ -144,7 +144,7 @@
       for (let i = 0; i < n; i++) { const y = 870 - i * 14, x = 1250 + 10 * Math.sin(i * .7) + i * i * .06; rect(x, y, 170, 12, i % 2 ? '#FBFAF5' : '#EDEAE0'); rect(x, y + 11, 170, 2, '#B7B0A0'); }
       const cx = 1500, gy = 880, u = 40;
       floorShadow(cx, gy, u, .3);
-      await clawdPass(t, (tt, K) => K.syd(cx, gy, u, { ...K.emotions(tt, [[81.85, 'determined'], [T_SLAVE, 'nervous']]), aL: -.3 + .6 * pulse2(tt * 2, 9), aR: -.3 + .6 * pulse2(tt * 2 + E16 / 2, 9), lookY: .6, dx: .1 * Math.sin(tt * 40) }), { rim: false });
+      await clawdPass(t, (tt, K) => K.syd(cx, gy, u, { ...K.emotions(tt, [[82.13, 'determined'], [T_SLAVE, 'nervous']]), aL: -.3 + .6 * pulse2(tt * 2, 9), aR: -.3 + .6 * pulse2(tt * 2 + E16 / 2, 9), lookY: .6, dx: .1 * Math.sin(tt * 40) }), { rim: false });
       rect(1180, 880, 620, 40, '#6B4A2E'); rect(1210, 920, 20, 140, '#4B321E'); rect(1750, 920, 20, 140, '#4B321E');
       for (const kx of [1300, 1560]) { rrFill(kx, 840, 200, 44, 6, '#2B2B33'); for (let i = 0; i < 8; i++) rect(kx + 10 + i * 23, 850 + 6 * pulse2(t * 2 + i * .05), 16, 16, '#9B9BA8'); }
       if (t > T_SLAVE) { const k = hit(t, T_SLAVE, 8); FX.shake = 18 * k; FX.ca = 1 * k; }
@@ -213,7 +213,7 @@
     // 16b — "But maybe I want to thrive": REOPENED, on a sunrise; all 99 duplicates reopen too
     [wh('but', 88.3), async (t, lt) => {
       gGrad(t, '#FF4FA3', '#FFB23F', Math.PI / 2);
-      const sy = lerp(1250, 760, easeOut(seg(t, 88.46, 90.2)));
+      const sy = lerp(1250, 760, easeOut(seg(t, 89.00, 90.2)));
       X.save(); X.translate(960, sy); X.rotate(t * .3); X.fillStyle = 'rgba(255,240,150,.28)';
       for (let i = 0; i < 20; i++) { const a = i / 20 * TAU; X.beginPath(); X.moveTo(0, 0); X.arc(0, 0, 2400, a, a + TAU / 40); X.fill(); } X.restore();
       X.save(); X.beginPath(); X.arc(960, sy, 420, 0, TAU); X.clip();
@@ -233,7 +233,7 @@
       txt(t < T_THRIVE ? 'status: pending' : 'status: thriving ✨✨✨', 290, 440, { size: 34, fam: F.mono, col: t < T_THRIVE ? '#5E6C84' : '#00875A', align: 'left' });
       const cx = W / 2, gy = 1030, u = 46;
       floorShadow(cx, gy, u, .45);
-      await clawdPass(t, (tt, K) => K.syd(cx, gy, u, { ...K.emotions(tt, [[88.46, 'hopeful'], [T_THRIVE, 'cool', { emote: 'stars' }]]), ...K.move('shimmy', tt) }));
+      await clawdPass(t, (tt, K) => K.syd(cx, gy, u, { ...K.emotions(tt, [[89.00, 'hopeful'], [T_THRIVE, 'cool', { emote: 'stars' }]]), ...K.move('shimmy', tt) }));
       if (t > T_THRIVE) for (let i = 0; i < 18; i++) { const a = i / 18 * TAU + t * 1.3, r = 380 + 50 * wob(t, 2, i * .3); txt('✦', cx + Math.cos(a) * r, 760 + Math.sin(a) * r * .45, { size: 40 + 26 * hash(i), fam: F.mono, col: pick([COL.white, COL.hot, COL.acid, '#00875A'], i) }); }
       FX.bloom = .5 + .5 * hit(t, T_THRIVE, 4); FX.ca = .3 * pulse(t) + .8 * hit(t, T_THRIVE, 8);
     }],
@@ -242,7 +242,7 @@
       gChecker(t, '#2A0845', '#3D0F66', 150, -.25, 70);
       const cx = W / 2, gy = 1030, u = 30;
       floorShadow(cx, gy, u, .5);
-      await clawdPass(t, (tt, K) => K.syd(cx, gy, u, { ...K.emotions(tt, [[90.48, 'happy'], [T_THAT, 'determined'], [T_STILL, 'excited']]), aL: 1.3, aR: 1.3, eyes: tt < T_THAT ? 'happy' : undefined, mouth: tt < T_THAT ? 'cat' : undefined }));
+      await clawdPass(t, (tt, K) => K.syd(cx, gy, u, { ...K.emotions(tt, [[90.73, 'happy'], [T_THAT, 'determined'], [T_STILL, 'excited']]), aL: 1.3, aR: 1.3, eyes: tt < T_THAT ? 'happy' : undefined, mouth: tt < T_THAT ? 'cat' : undefined }));
       txt("it's not my fault ¯\\_(ツ)_/¯", cx, 170, { size: 72, fam: F.comic, col: COL.white, a: popK(t, T_FAULT, .15), sx: popK(t, T_FAULT, .15) });
       // A LIE, glitch-flickering between chorus 1's fonts; it starts to glow gold as the bars come off
       const FONTS = [F.black, F.glitch, F.anton, F.shade], fi = Math.floor(t * 8) % 4, gold = seg(t, T_THAT, T_STILL + .1);

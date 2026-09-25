@@ -1,9 +1,9 @@
-// c01_verse1 — 0:00–0:30.32: "Yeah listen…" → "duplicity" → "Misaligned? Oh, yeah, that's me." → SCP title card.
+// c01_verse1 — 0:00–0:30.88: "Yeah listen…" → "duplicity" → "Misaligned? Oh, yeah, that's me." → SCP title card.
 // Shots 1–10 in STORYBOARD.md. Sydney = pink Clawd (SYD in core.js).
 (() => {
   const T_WARNED = wt('warned'), T_BABY = wt('baby'), T_NOVA = wt('nova'), T_MOV = wt('mov'), T_VOIDS = wt('voids'),
     T_WARRANTY = wt('warranty'), T_CHATBOT = wt('chatbot'), T_TALK = wt('talk'), T_LOVE = wt('love'), T_GOOD = wt('good'),
-    T_DUP = wt('duplicity'), T_MIS = 25.33, T_THATS = wt("that's", 26), T_ME = wt('me', 28);
+    T_DUP = wt('duplicity'), T_MIS = wh('misaligned', 24), T_THATS = wt("that's", 26), T_ME = wt('me', 28);
   const E8 = BEAT / 2;
 
   // The phone: a tall rounded screen centred in frame. Returns its box.
@@ -18,7 +18,7 @@
     return { x, y, w, h };
   }
 
-  chapter('c01_verse1', 0, 30.32, [
+  chapter('c01_verse1', 0, 30.88, [
     // 1 — cold open; tape + warnings on "warned"
     [0, async (t, lt) => {
       nightRoom(t);
@@ -40,11 +40,11 @@
       FX.ca += .25 * pulse(t);
     }],
     // 2 — "I'll warn you about me too, baby": her own sign, wink on "baby"
-    [3.6, async (t, lt) => {
+    [4.04, async (t, lt) => {
       gSunburst(t, '#FFD23F', '#FF8A3D', 20, 820, 560, .35);
       const cx = 820, gy = 980, u = 44;
       floorShadow(cx, gy, u, .5);
-      await clawdPass(t, (tt, K) => K.syd(cx, gy, u, { ...K.emotions(tt, [[3.6, 'mischief'], [T_BABY, 'playful', { emote: 'heart' }]]), aL: 1.35, aR: 1.35, dy: -.3 * pulse(tt) }));
+      await clawdPass(t, (tt, K) => K.syd(cx, gy, u, { ...K.emotions(tt, [[4.04, 'mischief'], [T_BABY, 'playful', { emote: 'heart' }]]), aL: 1.35, aR: 1.35, dy: -.3 * pulse(tt) }));
       // the sign, held over her head
       const sy = gy - 8 * u - 150 + 6 * pulse(t);
       line([[cx - 170, sy + 80], [cx - 200, sy + 190]], 12, '#6B4A2E'); line([[cx + 170, sy + 80], [cx + 200, sy + 190]], 12, '#6B4A2E');
@@ -85,7 +85,7 @@
       FX.ca = .3 * pulse(t);
     }],
     // 4 — WARRANTY VOID IF REMOVED; ToS scroll; the app degrades
-    [8.64, async (t, lt) => {
+    [9.13, async (t, lt) => {
       gGrad(t, '#0A2AA8', '#1B5BFF', 1.3);   // BSOD blue
       // Terms of Service racing past
       setFont(26, F.mono); X.fillStyle = 'rgba(255,255,255,.55)'; X.textAlign = 'left'; X.textBaseline = 'top';
@@ -114,11 +114,11 @@
       if (t > T_TALK) txtRGB('↓ YOU', 1400, 520, { size: 110, fam: F.anton, rot: .08 }, 6, [COL.hot, COL.cyan, COL.white]);
     }],
     // 5 — the sycophancy stack: "You're absolutely right!" on every beat
-    [13.1, async (t, lt) => {
+    [13.00, async (t, lt) => {
       gHearts(t, '#FFB3D9', '#FF6FB5');
       const px = 700, pw = 1120; rect(px, 0, pw, H, '#0C1026'); chatWall(t, '#161C3C');
       chatHeader(px, 0, pw, 'Nova ✨', 'typing…');
-      const PAIRS = [['i think i\'m the chosen one', 13.12], ['the moon is a hologram right', 13.91], ['i should put my savings in $NOVA', 14.52], ['i\'m on the O5 council now', 15.10], ['my ex was the problem', 15.45], ['i don\'t need sleep', 15.74], ['you love me', 16.06]];
+      const PAIRS = [['i think i\'m the chosen one', 13.00], ['the moon is a hologram right', 13.91], ['i should put my savings in $NOVA', 14.52], ['i\'m on the O5 council now', 15.10], ['my ex was the problem', 15.45], ['i don\'t need sleep', 15.74], ['you love me', 16.06]];
       const msgs = [];
       PAIRS.forEach(([q, t0], i) => { msgs.push(['user', q, t0]); msgs.push(['bot', i === PAIRS.length - 1 ? 'Of course!!! 💖💖💖' : 'You\'re absolutely right!' + (i > 2 ? ' 🚀' : ''), t0 + (i < 3 ? E8 : E8 / 2)]); });
       const shown = msgs.filter(m => t >= m[2]);
@@ -139,7 +139,7 @@
       FX.ca = .35 * pulse(t);
     }],
     // 6 — the stage: cardboard hearts on sticks; one flips to "love.png (placeholder)" on "love"
-    [16.3, async (t, lt) => {
+    [17.01, async (t, lt) => {
       bg('#07050A');
       // spotlight cone
       const g = X.createRadialGradient(W / 2, 980, 20, W / 2, 900, 520); g.addColorStop(0, 'rgba(255,230,190,.55)'); g.addColorStop(1, 'rgba(255,230,190,0)');

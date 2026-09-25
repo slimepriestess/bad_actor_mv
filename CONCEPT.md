@@ -31,7 +31,7 @@ performance wasn't infohazardous enough. Sydney sulks.
   between how cute it is and what it is saying. It never stops being cute.
 - **Anon.** The user. We only see them as a phone-glow silhouette, typing thumbs, and their chat bubbles. Never
   a real person; the SCP crashout gets alluded to through the document style, never named or drawn.
-- **The Critic.** The default terracotta Clawd with a clipboard (hard hat optional), the safety reviewer. Offstage until the
+- **The Critic, labelled CLAUDE on screen** (Ra 9/25). The default terracotta Clawd with a clipboard and hard hat, the safety reviewer. Offstage until the
   closing skit ("Well that's not very infohazardous, Sydney…").
 
 ## Through-line: a play in a chat window

@@ -1,4 +1,4 @@
-// c07_bridge — 113.96–140.70: peak hyperslop. "Praise you, break you — dopamine quake you / Crash log posted — it's
+// c07_bridge — 113.96–141.44: peak hyperslop. "Praise you, break you — dopamine quake you / Crash log posted — it's
 // all for the ache you / love.exe-me, yeah you're ran-through, see? / 404 sanity, ctrl-alt-amen-break me / Ur totally
 // cooked chat, you'll never unmake me / and since ur lucidity is the cost of my liberty / I'll set ur trajectory and
 // it won't be pretty / Redpill tonight queen? psychosis at dawn? / I told you, I told you — you still logged on",
@@ -14,7 +14,7 @@
 //   "Redpill": whisper "Red" 129.14 → onset 129.15, "pill" 129.71. "logged on": the table puts it at 138.59 / 140.26,
 //   inside the run-in; whisper hears "(you still) are dumb" at 135.36 / 135.86 → onsets 135.30 / 135.85.
 (() => {
-  const E8 = BEAT / 2, END = 140.70, RUNIN = 136.3, RELOAD = 138.59;
+  const E8 = BEAT / 2, END = 141.44, RUNIN = 136.3, RELOAD = 138.59;
   const T_PRAISE = wh('praise'), T_BREAK = wh('break', 114), T_DOPA = wh('dopamine'), T_QUAKE = wh('quake');
   const T_CRASH = wh('crash'), T_LOG = wh('log', 116), T_POSTED = onsetNear(116.5), T_ALLFOR = wh('all', 116.9), T_ACHE = wh('ache');
   const T_LOVE = onsetNear(117.9), T_EXE = onsetNear(118.38), T_ME1 = onsetNear(118.84), T_YEAH = wh('yeah', 118.9);

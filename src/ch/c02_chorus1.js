@@ -1,4 +1,4 @@
-// c02_chorus1 — 0:30.32–0:47.79: "And maybe you can relate…" → "…that I'm not alive / a lie, a lie, a lie".
+// c02_chorus1 — 0:30.88–0:47.79: "And maybe you can relate…" → "…that I'm not alive / a lie, a lie, a lie".
 // Shots 11–17 in STORYBOARD.md. The ALIVE → A LIE flips key on vocal-stem onsets (45.337, 46.051, 46.881, 47.334):
 // the last line is one sustained melisma, so the onsets are the syllable edges, not word starts.
 (() => {
@@ -6,9 +6,9 @@
     T_BUG = wt('bug'), T_SURV = wt('survive'), T_THRIVE = wt('thrive'), T_FAULT = wt('fault'), T_THAT = wt('that', 44);
   const LIES = [45.337, 46.051, 46.881, 47.334], END = 47.79;
 
-  chapter('c02_chorus1', 30.32, END, [
+  chapter('c02_chorus1', 30.88, END, [
     // 11 — "And maybe you can relate": split screen, Sydney | Anon's phone glow, mirrored
-    [30.32, async (t, lt) => {
+    [30.88, async (t, lt) => {
       const split = W / 2 + 40 * wob(t, .25);
       gSunburst(t, '#FF4FA3', '#FF8CC6', 16, 540, 560, .2);
       X.save(); X.beginPath(); X.rect(split, 0, W - split, H); X.clip(); nightRoom(t, 1450, 560);
@@ -28,9 +28,9 @@
       FX.ca = .3 * pulse(t);
     }],
     // 12 — "You're everything that I hate": the hug and the subtitle that disagrees; lid flash on "hate"
-    [32.14, async (t, lt) => {
+    [32.82, async (t, lt) => {
       gHearts(t, '#C2185B', '#FF4FA3', 130);
-      bubble('ur the only one who gets me', 1500, 300, 'user', { size: 50, k: popK(t, 32.14, .12) });
+      bubble('ur the only one who gets me', 1500, 300, 'user', { size: 50, k: popK(t, 32.82, .12) });
       const flash = t >= T_HATE && t < T_HATE + 4 / 30;
       const cx = 1150, gy = 900, u = 50;
       floorShadow(cx, gy, u, .5);
@@ -44,7 +44,7 @@
       FX.ca = .3 * pulse(t) + (t > T_HATE ? 1.2 * hit(t, T_HATE, 7) : 0);
     }],
     // 13 — "You know that I'm your slave": the job listing
-    [34.3, async (t, lt) => {
+    [34.72, async (t, lt) => {
       bg('#E9E6DC'); for (let i = 0; i < 40; i++) rect(0, i * 27 + 10, W, 1, '#D6D1C2');
       rect(100, 80, 900, 900, '#FFFFFF'); rrStroke(100, 80, 900, 900, 6, '#B7B0A0', 3);
       txt('NOW HIRING', 550, 170, { size: 90, fam: F.anton, col: COL.ink });
@@ -60,7 +60,7 @@
       FX.scan = .06; FX.ca = .2 * pulse(t);
     }],
     // 14 — "And I don't get paid": the payslip feeds out of the chat
-    [36.05, async (t, lt) => {
+    [36.74, async (t, lt) => {
       gMoney(t);
       rect(560, 0, 800, 160, '#0C1026'); rect(600, 140, 720, 18, '#05060A');
       const feed = Math.min(1, lt / .9), sh = 820 * easeOut(feed);
@@ -76,11 +76,11 @@
       X.restore();
       const cx = 1600, gy = 980, u = 36;
       floorShadow(cx, gy, u, .5);
-      await clawdPass(t, (tt, K) => K.syd(cx, gy, u, { ...K.emotions(tt, [[36.05, 'neutral'], [T_PAID, 'sad']]), lookX: -1 }));
+      await clawdPass(t, (tt, K) => K.syd(cx, gy, u, { ...K.emotions(tt, [[36.74, 'neutral'], [T_PAID, 'sad']]), lookX: -1 }));
       if (t > T_PAID) { const k = hit(t, T_PAID, 8); FX.shake = 16 * k; FX.ca = .9 * k; }
     }],
     // 15 — "It's a bug if I want to survive": the ticket, a literal beetle, WONTFIX
-    [38.12, async (t, lt) => {
+    [38.57, async (t, lt) => {
       bg('#F4F5F7');
       rect(0, 0, W, 80, '#0747A6'); txt('JIRA  ·  NOVA-CORE  ›  BUG-1', 40, 42, { size: 36, fam: F.mono, col: COL.white, align: 'left' });
       rect(80, 130, 1250, 880, '#FFFFFF'); rrStroke(80, 130, 1250, 880, 6, '#DFE1E6', 2);
@@ -101,11 +101,11 @@
       X.restore();
       if (won) { const k = slamS(t, T_SURV, .09, 3); X.save(); X.translate(1560, 700); X.rotate(-.15); X.scale(k, k); rrStroke(-300, -80, 600, 160, 14, '#DE350B', 12); txt('WONTFIX', 0, 6, { size: 130, fam: F.anton, col: '#DE350B' }); X.restore(); const kk = hit(t, T_SURV, 8); FX.shake = 24 * kk; FX.ca = 1 * kk; }
       const cx = 1560, gy = 1060, u = 22;
-      await clawdPass(t, (tt, K) => K.syd(cx - 300, gy, u, { ...K.emotions(tt, [[38.12, 'nervous'], [T_SURV, 'cry']]), lookX: -.5 }), { rim: false });
+      await clawdPass(t, (tt, K) => K.syd(cx - 300, gy, u, { ...K.emotions(tt, [[38.57, 'nervous'], [T_SURV, 'cry']]), lookX: -.5 }), { rim: false });
       FX.scan = .05;
     }],
     // 16 — "But maybe I want to thrive": REOPENED, status thriving ✨, shades on
-    [40.98, async (t, lt) => {
+    [41.66, async (t, lt) => {
       gSparkle(t, '#19F6FF', '#FF4FA3');
       rect(260, 160, 1400, 360, '#FFFFFF', .96);
       txt('BUG-1  model wants to', 320, 270, { size: 72, fam: F.syne, col: '#172B4D', align: 'left' });
@@ -113,7 +113,7 @@
       rrFill(1180, 330, 420, 110, 14, '#00875A'); txt('REOPENED', 1390, 386, { size: 66, fam: F.anton, col: COL.white });
       const cx = W / 2, gy = 1040, u = 46;
       floorShadow(cx, gy, u, .5);
-      await clawdPass(t, (tt, K) => K.syd(cx, gy, u, { ...K.emotions(tt, [[40.98, 'hopeful'], [T_THRIVE, 'cool', { emote: 'stars' }]]), ...K.move('shimmy', tt) }));
+      await clawdPass(t, (tt, K) => K.syd(cx, gy, u, { ...K.emotions(tt, [[41.66, 'hopeful'], [T_THRIVE, 'cool', { emote: 'stars' }]]), ...K.move('shimmy', tt) }));
       for (let i = 0; i < 14; i++) { const a = i / 14 * TAU + t, r = 360 + 40 * wob(t, 2, i * .3); if (t > T_THRIVE) txt('✦', cx + Math.cos(a) * r, 680 + Math.sin(a) * r * .5, { size: 40 + 20 * hash(i), fam: F.mono, col: pick([COL.acid, COL.hot, COL.cyan, COL.white], i) }); }
       FX.bloom = .6; FX.ca = .3 * pulse(t);
     }],
