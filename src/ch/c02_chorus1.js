@@ -129,7 +129,9 @@
       const size = 330 + 40 * n, k = n ? slamS(t, LIES[n - 1], .08, 1.9) : popK(t, T_THAT, .15);
       if (k > 0) {
         const light = n === 1 || n === 2;   // acid-yellow and cyan grounds need dark type
-        txtRGB(word, cx, 480, { size, fam: FONTS[Math.min(n, 3)], sx: k, rot: n ? (n % 2 ? -.05 : .05) : 0 }, 6 + 6 * n, light ? [COL.hot, COL.uv, COL.ink] : [COL.hot, COL.cyan, n > 2 ? COL.acid : COL.white]);
+        const o = { size, fam: FONTS[Math.min(n, 3)], sx: k, rot: n ? (n % 2 ? -.05 : .05) : 0 }, d = 6 + 6 * n;
+        if (light) comp('multiply', () => { txt(word, cx - d, 480, { ...o, col: COL.hot }); txt(word, cx + d, 480 + d * .3, { ...o, col: COL.uv }); txt(word, cx, 480, { ...o, col: COL.ink }); });   // 'screen' would wash dark type out on a light ground
+        else txtRGB(word, cx, 480, o, d, [COL.hot, COL.cyan, n > 2 ? COL.acid : COL.white]);
         // the V gets redacted on the first flip; more bars each time after
         for (let i = 0; i < n; i++) { const w = 280 + 60 * i, y = 480 + (i - 1) * 140, t0 = LIES[i]; rect(cx - w / 2 + (i % 2 ? 300 : -300), y - 26, w * easeOut((t - t0) / .06), 52, COL.redact); }
       }
