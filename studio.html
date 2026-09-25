@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>BAD_ACTOR studio</title>
+<style>
+  @font-face { font-family: 'VT323'; src: url(assets/fonts/VT323.ttf); }
+  @font-face { font-family: 'Space Mono'; src: url(assets/fonts/Space_Mono_wght_700.ttf); }
+  @font-face { font-family: 'UnifrakturCook'; src: url(assets/fonts/UnifrakturCook_wght_700.ttf); }
+  @font-face { font-family: 'Major Mono Display'; src: url(assets/fonts/Major_Mono_Display.ttf); }
+  @font-face { font-family: 'Rubik Glitch'; src: url(assets/fonts/Rubik_Glitch.ttf); }
+  @font-face { font-family: 'Silkscreen'; src: url(assets/fonts/Silkscreen.ttf); }
+  @font-face { font-family: 'Anton'; src: url(assets/fonts/Anton.ttf); }
+  @font-face { font-family: 'Bungee Shade'; src: url(assets/fonts/Bungee_Shade.ttf); }
+  @font-face { font-family: 'Syne'; src: url(assets/fonts/Syne_wght_800.ttf); }
+  html, body { margin: 0; background: #111; color: #eee; font: 13px system-ui, sans-serif; }
+  main { padding: 12px; display: grid; gap: 8px; }
+  #gl { width: min(100%, 1280px); aspect-ratio: 16 / 9; height: auto; background: #000; }
+  #src, .p5Canvas, canvas.p5Canvas { display: none !important; }
+  .bar { display: flex; gap: 10px; align-items: center; max-width: 1280px; }
+  #scrub { flex: 1; } #tt { font-variant-numeric: tabular-nums; min-width: 160px; }
+</style>
+<script src="node_modules/p5/lib/p5.min.js"></script>
+<script src="node_modules/p5.brush/dist/p5.brush.js"></script>
+<script src="src/kit_bundle.js"></script>
+</head>
+<body>
+<main>
+  <canvas id="gl" width="1920" height="1080"></canvas>
+  <canvas id="src" width="1920" height="1080"></canvas>
+  <div class="bar"><input id="scrub" type="range" min="0" max="214.8" step="0.0333" value="0"><span id="tt">loading…</span></div>
+</main>
+<script src="src/feat.js"></script>
+<script src="src/core.js"></script>
+<script src="src/post.js"></script>
+<script src="src/kit.js"></script>
+<script src="src/timeline.js"></script>
+<!-- chapters -->
+<script src="src/ch/c00_spike.js"></script>
+<script>
+(async () => {
+  const src = document.getElementById('src'), glc = document.getElementById('gl');
+  X = src.getContext('2d', { willReadFrequently: false });
+  POST.init(glc);
+  await Promise.all(FONTS_ALL.map(f => document.fonts.load(`40px "${f}"`)));
+  await document.fonts.ready;
+  while (!window.kitReady) await new Promise(r => setTimeout(r, 20));
+  async function frame(t) {
+    T = t; fxReset();
+    X.setTransform(1, 0, 0, 1, 0, 0); X.globalAlpha = 1; X.globalCompositeOperation = 'source-over'; X.filter = 'none'; X.shadowBlur = 0; X.letterSpacing = '0px';
+    await drawWorld(t);
+    POST.run(src, t);
+  }
+  window.renderAt = async (t, type = 'image/jpeg', q = .92) => { await frame(t); return glc.toDataURL(type, q); };
+  window.renderSheet = async (ts, cols, w) => {
+    const h = Math.round(w * 9 / 16), rows = Math.ceil(ts.length / cols), sh = document.createElement('canvas');
+    sh.width = cols * w; sh.height = rows * (h + 22); const c = sh.getContext('2d'); c.fillStyle = '#000'; c.fillRect(0, 0, sh.width, sh.height);
+    const ms = [];
+    for (let i = 0; i < ts.length; i++) { const t = ts[i], t0 = performance.now(); await frame(t); ms.push(Math.round(performance.now() - t0));
+      const x = (i % cols) * w, y = Math.floor(i / cols) * (h + 22); c.drawImage(glc, x, y, w, h);
+      c.fillStyle = '#fff'; c.font = '16px monospace'; c.fillText(t.toFixed(2) + 's', x + 6, y + h + 16); }
+    return { url: sh.toDataURL('image/jpeg', .9), ms };
+  };
+  const scrub = document.getElementById('scrub'), tt = document.getElementById('tt');
+  let busy = false, want = null;
+  const go = async () => { if (busy) return; busy = true; while (want != null) { const t = want; want = null; const t0 = performance.now(); await frame(t); tt.textContent = t.toFixed(2) + ' s · ' + Math.round(performance.now() - t0) + ' ms'; } busy = false; };
+  scrub.oninput = () => { want = +scrub.value; go(); };
+  want = +(new URLSearchParams(location.search).get('t') || 0); scrub.value = want; go();
+  window.ready = true;
+})();
+</script>
+</body>
+</html>
