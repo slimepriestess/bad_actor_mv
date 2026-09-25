@@ -181,13 +181,18 @@ function progress(x, y, w, h, k, col = COL.white, o = {}) {
 // CK.paint…; kit coordinates are the same 1920×1080 screen space). The result is drawn into X at the current
 // transform, so a pass can sit under or over any Canvas2D layer, and a shot may run several. Each pass costs one p5
 // redraw, so batch every Clawd that shares a layer into one job. Async: shots that use it must be async and awaited.
+// Watercolour fills are OFF on this layer by default: painted onto a transparent canvas, p5.brush's fill bleed leaves a
+// white diamond behind the body (found by A/B on shot 11). Flat wash + boiling ink reads as the same painted figure on
+// these dark grounds, and renders about twice as fast. o.fills = true opts back in (only over an opaque painted ground).
 async function clawdPass(t, job, o = {}) {
+  window.CK_NOFILL = !o.fills;
   const cv = await CK.run(t, (tt) => job(tt, CK));
+  window.CK_NOFILL = false;
   X.save();
   if (o.a != null) X.globalAlpha = o.a;
   if (o.comp) X.globalCompositeOperation = o.comp;
   // Default: a thin light rim so the kit's dark ink outline reads on the night-blue grounds (a die-cut sticker look).
-  X.filter = o.filter ?? (o.rim === false ? 'none' : `drop-shadow(0 0 ${o.rimR ?? 3}px ${o.rimCol ?? 'rgba(255,240,250,.9)'})`);
+  X.filter = o.filter ?? (o.rim === false || window.CK_NORIM ? 'none' : `drop-shadow(0 0 ${o.rimR ?? 3}px ${o.rimCol ?? 'rgba(255,240,250,.9)'})`);
   X.drawImage(cv, 0, 0, W, H);
   X.restore();
 }

@@ -11,3 +11,13 @@ LOOPS.spike = async t => {
   FX.ca = .4 * pulse(t);
 };
 LOOPS.spike.len = 4;
+LOOPS.art = async t => {
+  bg(COL.night);
+  window.CK_NOFILL = false;
+  await clawdPass(t, (tt, K) => K.syd(560, 800, 40, K.feel('hopeful', tt)));
+  window.CK_NOFILL = true;
+  await clawdPass(t, (tt, K) => K.syd(1360, 800, 40, K.feel('hopeful', tt)));
+  window.CK_NOFILL = false;
+  txt('fills on', 560, 900, { size: 40 }); txt('fills off', 1360, 900, { size: 40 });
+};
+LOOPS.art.len = 2;

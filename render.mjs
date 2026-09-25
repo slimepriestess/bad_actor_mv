@@ -1,4 +1,4 @@
-// render.mjs: drive studio.html in headless Chrome (from pdoom_video_ref, Mac paths, 30 fps).
+// render.mjs: drive studio.html in headless Chrome (from ignition_mv / pdoom_video_ref, Mac paths, 30 fps). Frames may be async (clawdPass).
 //   node render.mjs --sheet=23,23.5,24 [--cols=3] [--w=640] --out=out/check.jpg   contact sheet (fast visual check)
 //   node render.mjs --stills=0.8,3,23.8 --out=out/test                          full-res PNG stills
 //   node render.mjs --clip=0:6 --fps=24 --out=out/test.mp4                      short clip with audio
@@ -12,7 +12,7 @@ import { pathToFileURL } from 'node:url';
 
 const args = Object.fromEntries(process.argv.slice(2).map(a => { const [k, v] = a.replace(/^--/, '').split('='); return [k, v ?? true]; }));
 const CHROME = args.chrome || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-const DUR = 264.9, fps = +(args.fps || 30);
+const DUR = 214.8, fps = +(args.fps || 30);
 const FRAMES_DIR = 'out/frames';
 
 const run = (cmd, a) => new Promise((ok, bad) => { const p = spawn(cmd, a, { stdio: 'inherit' }); p.on('close', c => c ? bad(new Error(cmd + ' exited ' + c)) : ok()); });
