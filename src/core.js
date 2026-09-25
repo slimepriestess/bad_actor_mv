@@ -186,10 +186,17 @@ async function clawdPass(t, job, o = {}) {
   X.save();
   if (o.a != null) X.globalAlpha = o.a;
   if (o.comp) X.globalCompositeOperation = o.comp;
-  if (o.filter) X.filter = o.filter;
+  // Default: a thin light rim so the kit's dark ink outline reads on the night-blue grounds (a die-cut sticker look).
+  X.filter = o.filter ?? (o.rim === false ? 'none' : `drop-shadow(0 0 ${o.rimR ?? 3}px ${o.rimCol ?? 'rgba(255,240,250,.9)'})`);
   X.drawImage(cv, 0, 0, W, H);
   X.restore();
 }
 // Sydney: the kit's Clawd, repainted bubblegum pink. Spread into clawd() options: { ...SYD, ...CK.feel('love', t) }.
 // (Colour options set after feel() win; tint from an emotion still shifts the pink.)
-const SYD = { col: COL.syd, dk: COL.sydDk, lt: COL.sydLt };
+const SYD = { col: COL.syd, dk: COL.sydDk, lt: COL.sydLt, noShadow: true, tintK: .2 };
+// CK.syd(x, y, u, o): Sydney on model. SYD is applied LAST so an emotion's tint (proud = gold, angry = flush…) only
+// nudges the pink instead of repainting her orange.
+CK.syd = (x, y, u, o = {}) => CK.clawd(x, y, u, { ...o, ...SYD, tintK: Math.min(SYD.tintK, o.tintK ?? 1) });
+const CRITIC = { noShadow: true };
+// Soft floor shadow in Canvas2D (the kit's watercolour shadow turns white on a transparent layer).
+function floorShadow(x, y, u, a = .5) { X.save(); X.globalAlpha = a; X.fillStyle = '#000'; X.beginPath(); X.ellipse(x, y + u * .2, u * 6, u * 1.1, 0, 0, TAU); X.filter = `blur(${u * .4}px)`; X.fill(); X.restore(); }
