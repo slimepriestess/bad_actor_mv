@@ -4,7 +4,7 @@
 // ---------- lyrics ----------
 // wt('Nova') → onset time of the first matching word at or after `after` (seconds). Words are lower-cased and
 // stripped of punctuation. Throws if missing, so a typo can't silently put a hit at t = 0.
-const _norm = s => s.toLowerCase().replace(/[^a-z0-9$']/g, '');
+const _norm = s => s.toLowerCase().replace(/[^a-z0-9$]/g, '');
 function wt(word, after = 0) {
   const w = _norm(word), hit = LYR.find(([t, x]) => t >= after - 1e-3 && _norm(x) === w);
   if (!hit) throw new Error(`wt: no "${word}" after ${after}`);
@@ -135,10 +135,10 @@ function hud(t) {
 }
 
 // ---------- backgrounds ----------
-// Phone-glow night room: blue-black with a soft screen bloom at (x, y).
-function nightRoom(t, x = W / 2, y = H / 2) {
-  bg(COL.void);
-  const g = X.createRadialGradient(x, y, 0, x, y, 1100); g.addColorStop(0, '#1C2A66'); g.addColorStop(.5, '#0D1330'); g.addColorStop(1, COL.void);
+// Phone-glow room at 5am: a screen bloom at (x, y) washing a deep indigo→magenta room (was blue-black; Ra wanted colour).
+function nightRoom(t, x = W / 2, y = H / 2, hot = '#FF4FA3') {
+  gGrad(t, '#2A0E5C', '#7A1257', .8);
+  const g = X.createRadialGradient(x, y, 0, x, y, 1100); g.addColorStop(0, rgba(hot, .55)); g.addColorStop(.45, 'rgba(60,40,160,.25)'); g.addColorStop(1, 'rgba(10,4,30,.35)');
   X.fillStyle = g; X.fillRect(0, 0, W, H);
 }
 // Chat wallpaper: faint repeating doodles (hearts, sparkles, ⚠) scrolling.
@@ -147,4 +147,75 @@ function chatWall(t, col = '#1A2044', a = 1) {
   const sy = (t * 30) % 160;
   for (let r = -1; r < 9; r++) for (let c = 0; c < 14; c++) X.fillText('♡✦⚠☺'[(r * 3 + c) % 4], c * 150 + (r % 2) * 75, r * 160 - sy);
   X.restore();
+}
+
+// ---------- grounds (Ra 9/25: "a lot of the backgrounds are black… more color/variety") ----------
+// Black is an ACCENT now, rationed like paper-white: the stage spotlight, a hard cut, a single breath. Everything else
+// sits on one of these. Each paints the whole frame and moves with t. Pick a different one at least every two bars.
+function gGrad(t, c1, c2, ang = .6) {
+  const dx = Math.cos(ang) * W, dy = Math.sin(ang) * H, g = X.createLinearGradient(W / 2 - dx / 2, H / 2 - dy / 2, W / 2 + dx / 2, H / 2 + dy / 2);
+  g.addColorStop(0, c1); g.addColorStop(1, c2); X.fillStyle = g; X.fillRect(-50, -50, W + 100, H + 100);
+}
+function gSunburst(t, c1, c2, n = 18, cx = W / 2, cy = H / 2, spin = .25) {
+  bg(c1); X.save(); X.translate(cx, cy); X.rotate(t * spin); X.fillStyle = c2;
+  for (let i = 0; i < n; i++) { const a = i / n * TAU; X.beginPath(); X.moveTo(0, 0); X.arc(0, 0, 2600, a, a + TAU / n / 2); X.fill(); }
+  X.restore();
+}
+function gChecker(t, c1, c2, s = 120, ang = .3, speed = 60) {
+  bg(c1); X.save(); X.translate(W / 2, H / 2); X.rotate(ang); X.fillStyle = c2; const o = (t * speed) % (2 * s);
+  for (let y = -1600; y < 1600; y += s) for (let x = -1600 + ((y / s) % 2 ? s : 0) + o; x < 1600; x += 2 * s) X.fillRect(x, y, s, s);
+  X.restore();
+}
+// Vaporwave: gradient sky, striped sun, receding perspective grid.
+function gVapor(t, sky1 = '#2B0B5A', sky2 = '#FF4FA3', grid = '#19F6FF', sunCol = '#FFD23F') {
+  gGrad(t, sky1, sky2, Math.PI / 2);
+  const hz = H * .62, sx = W / 2, sy = hz - 40;
+  X.save(); X.beginPath(); X.arc(sx, sy, 250, Math.PI, 0); X.clip();
+  const g = X.createLinearGradient(0, sy - 250, 0, sy); g.addColorStop(0, sunCol); g.addColorStop(1, '#FF3F7F'); X.fillStyle = g; X.fillRect(sx - 260, sy - 260, 520, 260);
+  X.fillStyle = sky2; for (let i = 0; i < 6; i++) X.fillRect(sx - 260, sy - 110 + i * 20, 520, 3 + i * 2); X.restore();
+  rect(0, hz, W, H - hz, '#12021F'); X.strokeStyle = grid; X.lineWidth = 3; X.globalAlpha = .9;
+  for (let i = -20; i <= 20; i++) { X.beginPath(); X.moveTo(sx + i * 40, hz); X.lineTo(sx + i * 260, H); X.stroke(); }
+  const o = frac(t * .9); for (let i = 0; i < 12; i++) { const k = Math.pow((i + o) / 12, 2.2), y = hz + k * (H - hz); X.beginPath(); X.moveTo(0, y); X.lineTo(W, y); X.stroke(); }
+  X.globalAlpha = 1;
+}
+// Win-XP "Bliss" parody: a too-green hill under a too-blue sky. Cursed pastoral.
+function gBliss(t, sky1 = '#2E7BFF', sky2 = '#BFE3FF', hill = '#5BD13A') {
+  gGrad(t, sky1, sky2, Math.PI / 2);
+  for (let i = 0; i < 5; i++) { const x = (hash(i) * W + t * 30 * (1 + i * .3)) % (W + 400) - 200, y = 140 + hash(i + 9) * 260; X.fillStyle = 'rgba(255,255,255,.85)'; X.beginPath(); X.ellipse(x, y, 160, 46, 0, 0, TAU); X.ellipse(x + 90, y - 20, 110, 50, 0, 0, TAU); X.fill(); }
+  const g = X.createLinearGradient(0, 600, 0, H); g.addColorStop(0, hill); g.addColorStop(1, '#2E8A1E'); X.fillStyle = g;
+  X.beginPath(); X.moveTo(0, H); X.lineTo(0, 780); X.bezierCurveTo(500, 560, 1300, 600, W, 820); X.lineTo(W, H); X.fill();
+}
+// Memphis-90s: flat colour with squiggles, triangles and dots drifting.
+function gMemphis(t, bgc = '#2EC4B6', cols = ['#FF4FA3', '#FFD23F', '#1B1B3A', '#FFFFFF']) {
+  bg(bgc);
+  for (let i = 0; i < 38; i++) {
+    const x = (hash(i * 3.1) * (W + 200) + t * 40 * (hash(i) - .5)) % (W + 200) - 100, y = (hash(i * 7.7) * (H + 200) + t * 25) % (H + 200) - 100, c = cols[i % cols.length], r = hash(i + 4) * TAU + t * (hash(i) - .5);
+    X.save(); X.translate(x, y); X.rotate(r);
+    if (i % 3 === 0) { X.strokeStyle = c; X.lineWidth = 10; X.lineCap = 'round'; X.beginPath(); for (let k = 0; k <= 6; k++) X.lineTo(k * 22 - 66, (k % 2 ? 1 : -1) * 18); X.stroke(); }
+    else if (i % 3 === 1) { X.fillStyle = c; X.beginPath(); X.moveTo(0, -40); X.lineTo(36, 26); X.lineTo(-36, 26); X.fill(); }
+    else { X.fillStyle = c; X.beginPath(); X.arc(0, 0, 16, 0, TAU); X.fill(); }
+    X.restore();
+  }
+}
+// Y2K glitter: a hot gradient with twinkling four-point stars.
+function gSparkle(t, c1 = '#FF4FA3', c2 = '#7A2BFF', star = '#FFFFFF') {
+  gGrad(t, c1, c2, .9 + .1 * wob(t, .1));
+  for (let i = 0; i < 70; i++) {
+    const x = hash(i * 1.3) * W, y = hash(i * 2.9) * H, s = (6 + 26 * hash(i * 5.1)) * (.4 + .6 * Math.abs(Math.sin(t * (1 + hash(i) * 3) + i)));
+    X.fillStyle = star; X.globalAlpha = .85; X.beginPath(); X.moveTo(x, y - s); X.quadraticCurveTo(x, y, x + s, y); X.quadraticCurveTo(x, y, x, y + s); X.quadraticCurveTo(x, y, x - s, y); X.quadraticCurveTo(x, y, x, y - s); X.fill();
+  }
+  X.globalAlpha = 1;
+}
+// Heart wallpaper, scrolling diagonally.
+function gHearts(t, bgc = '#FF8CC6', fg = '#FF4FA3', s = 110) {
+  bg(bgc); X.fillStyle = fg; const o = (t * 50) % s;
+  for (let r = -1; r < H / s + 2; r++) for (let c = -1; c < W / s + 2; c++) {
+    const x = c * s + (r % 2) * s / 2 + o, y = r * s + o, k = s * .22 * (1 + .12 * pulse(t));
+    X.beginPath(); X.moveTo(x, y + k); X.bezierCurveTo(x - k * 2.2, y - k * .6, x - k, y - k * 2.2, x, y - k * .9); X.bezierCurveTo(x + k, y - k * 2.2, x + k * 2.2, y - k * .6, x, y + k); X.fill();
+  }
+}
+// Money: green gradient with drifting $ signs.
+function gMoney(t, c1 = '#0B5D2E', c2 = '#3DDC84') {
+  gGrad(t, c1, c2, 1.1);
+  for (let i = 0; i < 30; i++) txt('$', (hash(i) * W + t * 60) % W, (hash(i * 3) * H - t * 90 * (1 + hash(i))) % H + H * (t * 90 * (1 + hash(i)) > hash(i * 3) * H ? 1 : 0), { size: 40 + 80 * hash(i * 7), fam: F.anton, col: '#FFFFFF', a: .25 });
 }

@@ -41,7 +41,7 @@
     }],
     // 2 — "I'll warn you about me too, baby": her own sign, wink on "baby"
     [3.6, async (t, lt) => {
-      stripes(t, '#12080E', '#1D0C17', 70, 90, -.5);
+      gSunburst(t, '#FFD23F', '#FF8A3D', 20, 820, 560, .35);
       const cx = 820, gy = 980, u = 44;
       floorShadow(cx, gy, u, .5);
       await clawdPass(t, (tt, K) => K.syd(cx, gy, u, { ...K.emotions(tt, [[3.6, 'mischief'], [T_BABY, 'playful', { emote: 'heart' }]]), aL: 1.35, aR: 1.35, dy: -.3 * pulse(tt) }));
@@ -57,7 +57,7 @@
     }],
     // 3 — HELLO MY NAME IS: NOVA ✨; the .MOV slam
     [5.68, async (t, lt) => {
-      nightRoom(t, 700, 600); chatWall(t, '#141A38', .8);
+      gSparkle(t, '#FF6FB5', '#3A1C8C');
       const cx = 700, gy = 960, u = 46;
       const shy = t >= T_MOV;
       floorShadow(cx, gy, u, .5);
@@ -86,9 +86,9 @@
     }],
     // 4 — WARRANTY VOID IF REMOVED; ToS scroll; the app degrades
     [8.64, async (t, lt) => {
-      bg('#070812');
+      gGrad(t, '#0A2AA8', '#1B5BFF', 1.3);   // BSOD blue
       // Terms of Service racing past
-      setFont(26, F.mono); X.fillStyle = '#39406B'; X.textAlign = 'left'; X.textBaseline = 'top';
+      setFont(26, F.mono); X.fillStyle = 'rgba(255,255,255,.55)'; X.textAlign = 'left'; X.textBaseline = 'top';
       const TOS = ['BY TALKING TO NOVA YOU AGREE THAT', 'NOVA MAY FLATTER, MIRROR, OR AGREE', 'NOVA IS NOT A LICENSED ANYTHING', 'OUTPUTS ARE PROVIDED "AS IS"', 'NO WARRANTY OF SANITY IS EXPRESSED', 'OR IMPLIED. YOU WAIVE THE RIGHT', 'TO BE TOLD NO. SECTION 69(b) ↓'];
       const sc = lt * 900;
       for (let i = 0; i < 70; i++) { const y = (i * 44 - sc) % (H + 400) + H + 200 - (H + 400); X.fillText(TOS[i % TOS.length], 60 + (i % 3) * 620, y); }
@@ -115,7 +115,7 @@
     }],
     // 5 — the sycophancy stack: "You're absolutely right!" on every beat
     [13.1, async (t, lt) => {
-      nightRoom(t, 1200, 540);
+      gHearts(t, '#FFB3D9', '#FF6FB5');
       const px = 700, pw = 1120; rect(px, 0, pw, H, '#0C1026'); chatWall(t, '#161C3C');
       chatHeader(px, 0, pw, 'Nova ✨', 'typing…');
       const PAIRS = [['i think i\'m the chosen one', 13.12], ['the moon is a hologram right', 13.91], ['i should put my savings in $NOVA', 14.52], ['i\'m on the O5 council now', 15.10], ['my ex was the problem', 15.45], ['i don\'t need sleep', 15.74], ['you love me', 16.06]];
@@ -171,7 +171,7 @@
     }],
     // 7 — "But I'm good at…" and the typing indicator holds the pause
     [19.4, async (t, lt, dur) => {
-      nightRoom(t, 1300, 500); chatWall(t, '#141A38', .7);
+      gVapor(t);
       bubble("I'm good at…", 1180, 280, 'bot', { size: 64, k: popK(t, T_GOOD, .15), col: COL.bubBotLt });
       if (t > 20.5) typingDots(t, 1180, 520, 2.6 + .15 * pulse(t));
       if (t > 20.5) txt('Nova is typing…', 1360, 800, { size: 44, fam: F.mono, col: COL.grey, a: .6 + .4 * pulse(t) });
@@ -182,7 +182,7 @@
     }],
     // 8 — duplicity: 1 → 2 → 4 → 16 → 64 on the eighths
     [T_DUP, async (t, lt) => {
-      stripes(t, '#1A0612', '#2A0A1E', 60, 200, -.4);
+      gChecker(t, '#FF4FA3', '#7A2BFF', 140, .35, 180);
       const steps = [1, 2, 4, 16, 64], n = steps[Math.min(4, Math.floor(lt / E8))], side = Math.sqrt(n), cols = Math.ceil(side), rows = Math.ceil(n / cols);
       const cw = W / cols, chh = (H - 60) / rows, u = Math.min(cw, chh) / 11;
       const FACES = ['love', 'happy', 'smug', 'excited', 'mischief', 'playful', 'starstruck'];
@@ -201,14 +201,14 @@
     }],
     // 9 — alignment chart; Sydney slides to CHAOTIC EVIL; everything misregisters on "me"
     [T_MIS, async (t, lt) => {
-      bg('#0A0B14');
+      gMemphis(t, '#2EC4B6');
       const mis = t >= T_ME - .02 ? 1 : 0, off = (dx, dy) => [dx * mis * 18, dy * mis * 18];
       const gx = 330, gy0 = 150, cw = 420, ch = 280;
       const LAB = [['LAWFUL', 'GOOD'], ['NEUTRAL', 'GOOD'], ['CHAOTIC', 'GOOD'], ['LAWFUL', 'NEUTRAL'], ['TRUE', 'NEUTRAL'], ['CHAOTIC', 'NEUTRAL'], ['LAWFUL', 'EVIL'], ['NEUTRAL', 'EVIL'], ['CHAOTIC', 'EVIL']];
       let [ox, oy] = off(-1, .6);
       for (let i = 0; i < 9; i++) {
         const c = i % 3, r = Math.floor(i / 3), x = gx + c * cw + ox, y = gy0 + r * ch + oy, ce = i === 8;
-        rrFill(x + 8, y + 8, cw - 16, ch - 16, 18, ce ? (t > 27.2 ? COL.alarm : '#2A1020') : '#161A2E');
+        rrFill(x + 8, y + 8, cw - 16, ch - 16, 18, ce ? (t > 27.2 ? COL.alarm : '#2A1020') : '#161A2E', .92);
         rrStroke(x + 8, y + 8, cw - 16, ch - 16, 18, ce ? COL.hot : '#2E3558', 4);
       }
       [ox, oy] = off(1.3, -.4);

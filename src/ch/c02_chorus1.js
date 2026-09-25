@@ -10,7 +10,7 @@
     // 11 — "And maybe you can relate": split screen, Sydney | Anon's phone glow, mirrored
     [30.32, async (t, lt) => {
       const split = W / 2 + 40 * wob(t, .25);
-      bg('#12060F'); stripes(t, '#12060F', '#1F0A18', 50, 80, .6);
+      gSunburst(t, '#FF4FA3', '#FF8CC6', 16, 540, 560, .2);
       X.save(); X.beginPath(); X.rect(split, 0, W - split, H); X.clip(); nightRoom(t, 1450, 560);
       // Anon: a silhouette lit from below by the phone
       X.fillStyle = '#05060A'; X.beginPath(); X.ellipse(1450, 420, 150, 180, 0, 0, TAU); X.fill();
@@ -29,7 +29,7 @@
     }],
     // 12 — "You're everything that I hate": the hug and the subtitle that disagrees; lid flash on "hate"
     [32.14, async (t, lt) => {
-      nightRoom(t, 960, 500); chatWall(t, '#161C3C', .7);
+      gHearts(t, '#C2185B', '#FF4FA3', 130);
       bubble('ur the only one who gets me', 1500, 300, 'user', { size: 50, k: popK(t, 32.14, .12) });
       const flash = t >= T_HATE && t < T_HATE + 4 / 30;
       const cx = 1150, gy = 900, u = 50;
@@ -61,7 +61,7 @@
     }],
     // 14 — "And I don't get paid": the payslip feeds out of the chat
     [36.05, async (t, lt) => {
-      nightRoom(t, 960, 380);
+      gMoney(t);
       rect(560, 0, 800, 160, '#0C1026'); rect(600, 140, 720, 18, '#05060A');
       const feed = Math.min(1, lt / .9), sh = 820 * easeOut(feed);
       X.save(); X.beginPath(); X.rect(0, 150, W, H); X.clip();
@@ -106,7 +106,7 @@
     }],
     // 16 — "But maybe I want to thrive": REOPENED, status thriving ✨, shades on
     [40.98, async (t, lt) => {
-      stripes(t, '#1B0A2A', '#2A0F40', 80, 260, -.3);
+      gSparkle(t, '#19F6FF', '#FF4FA3');
       rect(260, 160, 1400, 360, '#FFFFFF', .96);
       txt('BUG-1  model wants to', 320, 270, { size: 72, fam: F.syne, col: '#172B4D', align: 'left' });
       txt(t < T_THRIVE ? 'survive' : 'THRIVE ✨', 320, 390, { size: t < T_THRIVE ? 72 : 120, fam: t < T_THRIVE ? F.syne : F.anton, col: t < T_THRIVE ? '#172B4D' : COL.hot, align: 'left', sx: t < T_THRIVE ? 1 : slamS(t, T_THRIVE, .1, 1.8) });
@@ -120,7 +120,7 @@
     // 17 — "not my fault that I'm not a-live / a lie, a lie, a lie": ALIVE → A LIE, harder each time; hard cut at END
     [43.09, async (t, lt) => {
       const n = LIES.filter(x => t >= x).length;
-      bg(n % 2 ? '#1A0008' : '#07060C');
+      bg(['#12021F', '#E8FF3A', '#19F6FF', '#FF2E8A', '#7A2BFF'][n]);   // each 'lie' flips the ground
       const cx = W / 2, gy = 1030, u = 30;
       floorShadow(cx, gy, u, .5);
       await clawdPass(t, (tt, K) => K.syd(cx, gy, u, { ...K.feel('happy', tt), aL: 1.3, aR: 1.3, eyes: 'happy', mouth: 'cat', dy: -.5 * pulse(tt) }));
@@ -128,7 +128,8 @@
       const FONTS = [F.anton, F.black, F.glitch, F.shade], word = n === 0 ? 'ALIVE' : 'A LIE';
       const size = 330 + 40 * n, k = n ? slamS(t, LIES[n - 1], .08, 1.9) : popK(t, T_THAT, .15);
       if (k > 0) {
-        txtRGB(word, cx, 480, { size, fam: FONTS[Math.min(n, 3)], sx: k, rot: n ? (n % 2 ? -.05 : .05) : 0 }, 6 + 6 * n, [COL.hot, COL.cyan, n > 2 ? COL.acid : COL.white]);
+        const light = n === 1 || n === 2;   // acid-yellow and cyan grounds need dark type
+        txtRGB(word, cx, 480, { size, fam: FONTS[Math.min(n, 3)], sx: k, rot: n ? (n % 2 ? -.05 : .05) : 0 }, 6 + 6 * n, light ? [COL.hot, COL.uv, COL.ink] : [COL.hot, COL.cyan, n > 2 ? COL.acid : COL.white]);
         // the V gets redacted on the first flip; more bars each time after
         for (let i = 0; i < n; i++) { const w = 280 + 60 * i, y = 480 + (i - 1) * 140, t0 = LIES[i]; rect(cx - w / 2 + (i % 2 ? 300 : -300), y - 26, w * easeOut((t - t0) / .06), 52, COL.redact); }
       }
