@@ -4,3 +4,7 @@ analysis/stems/
 .DS_Store
 *.wav
 assets/track.m4a
+
+# song audio never goes in the public repo
+*.m4a
+*.mp3
